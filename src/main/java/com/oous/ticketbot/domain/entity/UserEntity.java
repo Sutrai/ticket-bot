@@ -10,6 +10,6 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    private String username;
     private Long telegramId;
+    private Integer applicationCount = 0;
 }

@@ -31,7 +31,7 @@ public class UpdateDispatcher {
                 if (text.charAt(0) == '/') {
                     return commandHandler.answer(update, bot);
                 }
-                return messageHandler.answer(update.getMessage());
+                return messageHandler.answer(update.getMessage(), bot);
             }
         }
         return null;

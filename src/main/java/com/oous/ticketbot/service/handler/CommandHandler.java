@@ -1,6 +1,8 @@
 package com.oous.ticketbot.service.handler;
 
 import com.oous.ticketbot.data.CommandData;
+import com.oous.ticketbot.domain.entity.UserEntity;
+import com.oous.ticketbot.domain.entity.UserForm;
 import com.oous.ticketbot.repository.UserRepository;
 import com.oous.ticketbot.service.bot.MessageService;
 import com.oous.ticketbot.service.core.DataService;
@@ -24,6 +26,8 @@ public class CommandHandler {
 
     public BotApiMethod<?> answer(Update update, Bot bot) {
         String command =  update.getMessage().getText().substring(1);
+        Long userId = update.getMessage().getFrom().getId();
+        String userName = update.getMessage().getFrom().getUserName();
         CommandData commandData;
 
         try {
@@ -35,9 +39,30 @@ public class CommandHandler {
 
         switch (commandData) {
             case start -> {
-                userRepository.save(dataService.insertNewUser(update.getMessage()));
+                 UserEntity user = userRepository.save(dataService.insertNewUser(update.getMessage()));
+
+                if (user.getApplicationCount() >= 3) {
+                    return messageService.executeMessage(
+                            "❌ Лимит заявок исчерпан (максимум 3).",
+                            update.getMessage().getChatId(),
+                            null
+                    );
+                }
+
+                UserForm userForm = userFormService.findByUserId(userId);
+                if (userForm == null) {
+                    userForm = new UserForm();
+                    userForm.setUsername(userName);
+                    userForm.setUser(user);
+                }
+                userForm.setCurrentStep(1);
+                userFormService.save(userForm);
+
                 return messageService.executeMessage(
-                        "privet",
+                    "\uD83C\uDF1F Здесь ты можешь оставить заявку на сервер *ISLAND OF 44*.\n" +
+                        "У тебя есть **3 попытки** на корректное заполнение.\n" +
+                        "Если заявка будет оформлена неверно, *она будет отклонена.*\n\n" +
+                        "*(1/4) Введите ваш ник в майнкрафте:*",
                         update.getMessage().getChatId(),
                         null
                 );

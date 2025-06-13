@@ -7,4 +7,8 @@ public interface UserFormService {
     UserForm findByUserId(Long userId);
 
     void save(UserForm userForm);
+
+    UserForm findActiveFormByUserId(Long userId);
+
+    UserForm findById(Long id);
 }

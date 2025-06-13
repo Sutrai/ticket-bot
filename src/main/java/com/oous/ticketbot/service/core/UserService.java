@@ -6,4 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public interface UserService {
 
     UserEntity insertNewUser(Message message);
+
+    void save(UserEntity user);
 }

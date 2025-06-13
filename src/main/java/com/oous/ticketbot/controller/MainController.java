@@ -14,7 +14,7 @@ public class MainController {
 
     private final Bot bot;
 
-    @PostMapping("/webhook")
+    @PostMapping("/webhook2")
     public BotApiMethod<?> updateListener(@RequestBody Update update){
         return bot.onWebhookUpdateReceived(update);
     }

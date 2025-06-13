@@ -1,8 +1,6 @@
 package com.oous.ticketbot.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -11,8 +9,10 @@ import lombok.Data;
 public class UserForm {
 
     @Id
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    private String username;
     private Integer currentStep = 0;
 
     private String name;
@@ -23,4 +23,8 @@ public class UserForm {
     public boolean isFormInProgress() {
         return currentStep > 0;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }

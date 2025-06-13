@@ -34,7 +34,7 @@ public class MessageService {
         message.setChatId(String.valueOf(chatId));
         message.setText(text);
         message.disableWebPagePreview();
-        message.setParseMode(ParseMode.MARKDOWNV2);
+        message.setParseMode(ParseMode.MARKDOWN);
         message.setReplyMarkup(markup);
         return message;
     }
